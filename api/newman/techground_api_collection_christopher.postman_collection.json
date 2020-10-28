@@ -1,0 +1,236 @@
+{
+	"info": {
+		"_postman_id": "b66537e9-6409-4987-8c3d-2964bac6015b",
+		"name": "TechGround_API_Collection",
+		"description": "Collection used on the final project of the Test Automation Certification",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Status Endpoint",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c3645418-02e0-4235-bd90-3577ba8ff07e",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body matches 'Listos para el examen'\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"Listos para el examen\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/status",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PutName No Body Endpoint",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ccd6509c-0f5f-4f07-8a31-d7c1b9d4b18c",
+						"exec": [
+							"pm.test(\"Status code is 406\", function () {",
+							"    pm.response.to.have.status(406);",
+							"});",
+							"",
+							"pm.test(\"Body matches 'Name was not provided'\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"Name was not provided\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "testpass",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "testuser",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/updateName",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"updateName"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RandomName No Auth Endpoint",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4c6739ca-1051-4382-a8d9-7433f2aa1836",
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});",
+							"",
+							"pm.test(\"Body matches 'Please login first'\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"Please login first\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/randomName",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"randomName"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RandomName Endpoint",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6124c1e8-f164-4d77-9535-bc0169bc7b41",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.environment.set(\"random_name\", jsonData.name);",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "testpass",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "testuser",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/randomName",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"randomName"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SameName Endpoint",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "e3a44930-4ab7-494a-a70f-7d88ab17cdce",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "56bb892a-a766-4408-a1a6-b8215ddb40cf",
+						"exec": [
+							"var randomName = pm.environment.get(\"random_name\");",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body matches '\" + randomName + \"'\", function () {",
+							"    pm.expect(pm.response.text()).to.include(randomName);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"{{random_name}}\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/sameName",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"sameName"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
