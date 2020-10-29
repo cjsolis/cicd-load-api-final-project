@@ -11,12 +11,20 @@ pipeline {
             }
         }
 
+        stage('Restassure Tests') {
+            steps {
+                sh '''
+                cd api/newman
+                newman run techground_api_collection_christopher.postman_collection.json -e projectapi.postman_environment.json
+                '''
+            }
+        }
+
         stage('Jmeter Tests') {
             steps {
                 sh '''
-                node --version
-                cd load
-                jmeter -n -t examen_load_test.jmx
+                cd api/rest-assure
+                mvn clean test
                 '''
             }
         }
