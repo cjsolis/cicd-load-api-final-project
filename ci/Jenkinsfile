@@ -4,7 +4,6 @@ pipeline {
         stage('Newman Tests') {
             steps {
                 sh '''
-                node --version
                 cd api/newman
                 newman run techground_api_collection_christopher.postman_collection.json -e projectapi.postman_environment.json
                 '''
@@ -14,8 +13,8 @@ pipeline {
         stage('Restassure Tests') {
             steps {
                 sh '''
-                cd api/newman
-                newman run techground_api_collection_christopher.postman_collection.json -e projectapi.postman_environment.json
+                cd api/rest-assure
+                mvn clean test
                 '''
             }
         }
@@ -23,8 +22,9 @@ pipeline {
         stage('Jmeter Tests') {
             steps {
                 sh '''
-                cd api/rest-assure
-                mvn clean test
+                export PATH=/home/pjcalvov/jmeter/apache-jmeter-5.3/bin:$PATH
+                cd load
+                jmeter -n -t examen_load_test.jmx            
                 '''
             }
         }
