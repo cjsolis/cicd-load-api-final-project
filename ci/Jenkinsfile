@@ -14,6 +14,7 @@ pipeline {
         stage('Rest Assured Tests') {
             steps {
                 sh '''
+                ls
                 cd rest-assured
                 mvn clean test
                 cd ..
@@ -25,6 +26,7 @@ pipeline {
         stage('Jmeter Tests') {
             steps {
                 sh '''
+                ls
                 export PATH=/home/pjcalvov/jmeter/apache-jmeter-5.3/bin:$PATH
                 cd load
                 jmeter -n -t examen_load_test.jmx            
