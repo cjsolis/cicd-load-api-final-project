@@ -6,15 +6,18 @@ pipeline {
                 sh '''
                 cd api/newman
                 newman run techground_api_collection_christopher.postman_collection.json -e projectapi.postman_environment.json
+                cd ..
                 '''
             }
         }
 
-        stage('Restassure Tests') {
+        stage('Rest Assured Tests') {
             steps {
                 sh '''
-                cd api/rest-assure
+                cd rest-assured
                 mvn clean test
+                cd ..
+                cd ..
                 '''
             }
         }
